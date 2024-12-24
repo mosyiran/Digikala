@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 import datetime
 
 class Category(models.Model):
@@ -24,6 +25,9 @@ class Product(models.Model):
     price = models.DecimalField(default=0, max_digits=12, decimal_places=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default= 1)
     picture = models.ImageField( upload_to='upload/product/')
+    star = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    is_sale = models.BooleanField(default=False)
+    sale_price = models.DecimalField(default=0, max_digits=12, decimal_places=0)
 
     # SIZE_HA = (
     #     ('m',32),
@@ -34,6 +38,8 @@ class Product(models.Model):
     # size = models.CharField(max_length=4, choices=SIZE_HA, default=32)
     def __str__(self):
         return self.name
+
+
 
 
 class Order(models.Model):
